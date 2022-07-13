@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { _createUser, _deleteUser, _removeThingFromUser } from './store';
 
 
 const Users = ({ users, createUser, deleteUser, things, removeThingFromUser })=> {
@@ -47,20 +47,14 @@ const mapStateToProps = (state)=> {
 
 const mapDispatch = (dispatch)=> {
   return {
-    createUser: async()=> {
-      const user = (await axios.post('/api/users', {name: Math.random()})).data;
-      dispatch({ type: 'CREATE_USER', user});
-      //hint
-      //dispatch(createUser({name: Math.random()}));
+    createUser: ()=> {
+      dispatch(_createUser());
     },
-    removeThingFromUser: async(thing)=> {
-      thing = {...thing, userId: null}
-      const updatedThing = (await axios.put(`/api/things/${thing.id}`, thing)).data
-      dispatch({ type: 'UPDATE_THING', thing: updatedThing});
+    removeThingFromUser: (thing)=> {
+      dispatch(_removeThingFromUser(thing));
     },
-    deleteUser: async(user)=> {
-      await axios.delete(`/api/users/${user.id}`);
-      dispatch({ type: 'DELETE_USER', user});
+    deleteUser: (user)=> {
+      dispatch(_deleteUser(user));
     },
   };
 }

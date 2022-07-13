@@ -24,6 +24,7 @@ const Home = ({ users, things, topRanked })=> {
   );
 };
 
+//todo do user rank same way
 const mapSToP = (s)=> {
   const topRank = Math.max(...s.things.map(thing => thing.ranking));
   const topRanked = s.things.filter(thing => thing.ranking === topRank);

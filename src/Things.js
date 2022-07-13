@@ -1,7 +1,7 @@
 import React from 'react';
 import ThingForm from './ThingForm';
 import { connect } from 'react-redux';
-import { deleteThing, updateThing } from './store';
+import { _deleteThing, _updateThing } from './store';
 
 const Things = ({ things, users, deleteThing, increment, updateThing })=> {
   return (
@@ -53,14 +53,14 @@ export default connect(
     return {
       updateThing: (thing, userId)=> {
         thing = {...thing, userId: userId * 1 };
-        dispatch(updateThing(thing));
+        dispatch(_updateThing(thing));
       },
       increment: (thing, dir)=> {
         thing = {...thing, ranking: thing.ranking + dir};
-        dispatch(updateThing(thing));
+        dispatch(_updateThing(thing));
       },
       deleteThing: (thing)=> {
-        dispatch(deleteThing(thing));
+        dispatch(_deleteThing(thing));
       }
     };
 
