@@ -53,6 +53,13 @@ const reducer = combineReducers({
   view: viewReducer
 });
 
+const _createThing = ()=> {
+  return async(dispatch)=> {
+    const response = await axios.post('/api/things', { name: faker.commerce.product()});
+    const thing = response.data;
+    dispatch({ type: 'CREATE_THING', thing });
+  };
+};
 const _updateThing = (thing)=> {
   return async(dispatch)=> {
     thing = (await axios.put(`/api/things/${thing.id}`, thing)).data;
@@ -88,6 +95,6 @@ const _removeThingFromUser = (thing)=> {
 
 const store = createStore(reducer, applyMiddleware(logger, thunk));
 
-export { _deleteThing, _updateThing, _createUser, _deleteUser, _removeThingFromUser };
+export { _deleteThing, _updateThing, _createThing, _createUser, _deleteUser, _removeThingFromUser };
 
 export default store;
