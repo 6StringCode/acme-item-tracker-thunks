@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { _createUser, _deleteUser, _removeThingFromUser } from './store';
+import { _createUser, _deleteUser, _removeThingFromUser, _updateUser } from './store';
 
 
-const Users = ({ users, createUser, deleteUser, things, removeThingFromUser })=> {
+const Users = ({ users, createUser, deleteUser, things, removeThingFromUser, increment })=> {
   return (
     <div>
       <h1>Users</h1>
@@ -13,7 +13,9 @@ const Users = ({ users, createUser, deleteUser, things, removeThingFromUser })=>
           users.map( user => {
             return (
               <li key={ user.id }>
-                { user.name }
+                { user.name } ({ user.ranking })
+                <button onClick={()=> increment(user, -1)}>-</button>
+                <button onClick={()=> increment(user, 1)}>+</button>
                 <button onClick={ ()=> deleteUser(user)}>x</button>
                 <ul>
                 {
@@ -52,6 +54,10 @@ const mapDispatch = (dispatch)=> {
     },
     removeThingFromUser: (thing)=> {
       dispatch(_removeThingFromUser(thing));
+    },
+    increment: (user, dir)=> {
+      user = {...user, ranking: user.ranking + dir};
+      dispatch(_updateUser(user));
     },
     deleteUser: (user)=> {
       dispatch(_deleteUser(user));

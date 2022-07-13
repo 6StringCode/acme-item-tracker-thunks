@@ -28,6 +28,9 @@ const usersReducer = (state = [], action)=> {
   if(action.type === 'CREATE_USER'){
     return [...state, action.user ]; 
   }
+  if(action.type === 'UPDATE_USER'){
+    return state.map(user => user.id !== action.user.id ? user : action.user);
+  }
   return state;
 };
 
@@ -60,12 +63,6 @@ const _createThing = ()=> {
     dispatch({ type: 'CREATE_THING', thing });
   };
 };
-const _updateThing = (thing)=> {
-  return async(dispatch)=> {
-    thing = (await axios.put(`/api/things/${thing.id}`, thing)).data;
-    dispatch({ type: 'UPDATE_THING', thing });
-  };
-};
 const _deleteThing = (thing)=> {
   return async(dispatch)=> {
     await axios.delete(`/api/things/${thing.id}`);
@@ -91,10 +88,21 @@ const _removeThingFromUser = (thing)=> {
     dispatch({ type: 'UPDATE_THING', thing: updatedThing});
   };
 };
-
+const _updateThing = (thing)=> {
+  return async(dispatch)=> {
+    thing = (await axios.put(`/api/things/${thing.id}`, thing)).data;
+    dispatch({ type: 'UPDATE_THING', thing });
+  };
+};
+const _updateUser = (user)=> {
+  return async(dispatch)=> {
+    user = (await axios.put(`/api/users/${user.id}`, user)).data;
+    dispatch({ type: 'UPDATE_USER', user });
+  };
+};
 
 const store = createStore(reducer, applyMiddleware(logger, thunk));
 
-export { _deleteThing, _updateThing, _createThing, _createUser, _deleteUser, _removeThingFromUser };
+export { _deleteThing, _updateThing, _createThing, _createUser, _deleteUser, _updateUser, _removeThingFromUser };
 
 export default store;
